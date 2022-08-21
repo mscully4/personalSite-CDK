@@ -13,7 +13,7 @@ export class CiCdAwsPipelineDemoStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    new CodePipeline(this, "Pipeline", {
+    const pipeline = new CodePipeline(this, "Pipeline", {
       pipelineName: "TestPipeline",
       synth: new ShellStep("Synth", {
         input: CodePipelineSource.gitHub("mscully4/personalSite-CDK", "test"), //Remember to change

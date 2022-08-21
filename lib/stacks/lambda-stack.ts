@@ -14,7 +14,7 @@ export class MyLambdaStack extends cdk.Stack {
     new Function(this, "LambdaFunction", {
       runtime: Runtime.NODEJS_12_X, //using node for this, but can easily use python or other
       handler: "lambda.handler.handler",
-      code: Code.fromAsset("./", {
+      code: Code.fromAsset("./api", {
         exclude: ["cdk.out"],
       }), //resolving to ./lambda directory
       environment: { stageName: stageName }, //inputting stagename

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
-import { CiCdAwsPipelineDemoStack } from "./ci-cd-aws-pipeline-demo-stack";
+import { CiCdAwsPipelineDemoStack } from "./stacks/ci-cd-aws-pipeline-demo-stack";
 
 const app = new cdk.App();
 new CiCdAwsPipelineDemoStack(app, "CiCdAwsPipelineDemoStack", {

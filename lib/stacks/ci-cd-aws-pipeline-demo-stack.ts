@@ -7,7 +7,7 @@ import {
   Step,
 } from "aws-cdk-lib/pipelines";
 import { ManualApprovalStep } from "aws-cdk-lib/pipelines";
-import { MyPipelineAppStage } from "./stage";
+import { MyPipelineAppStage } from "../stage";
 
 export class CiCdAwsPipelineDemoStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {

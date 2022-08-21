@@ -2,6 +2,7 @@
   "name": "ci-cd-aws-pipeline-demo",
   "version": "0.1.0",
   "main": "dist/lib/app.js",
+  "types": "dist/types/app.d.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",

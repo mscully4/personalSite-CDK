@@ -21,18 +21,18 @@ export class CiCdAwsPipelineDemoStack extends cdk.Stack {
       }),
     });
 
-    const testingStage = pipeline.addStage(
-      new MyPipelineAppStage(this, "test", {
-        env: { account: "735029168602", region: "us-west-2" },
-      })
-    );
+    // const testingStage = pipeline.addStage(
+    //   new MyPipelineAppStage(this, "test", {
+    //     env: { account: "735029168602", region: "us-west-2" },
+    //   })
+    // );
 
-    testingStage.addPre(
-      new ShellStep("Run Unit Tests", { commands: ["npm install", "npm test"] })
-    );
-    testingStage.addPost(
-      new ManualApprovalStep("Manual approval before production")
-    );
+    // testingStage.addPre(
+    //   new ShellStep("Run Unit Tests", { commands: ["npm install", "npm test"] })
+    // );
+    // testingStage.addPost(
+    //   new ManualApprovalStep("Manual approval before production")
+    // );
 
     const prodStage = pipeline.addStage(
       new MyPipelineAppStage(this, "prod", {

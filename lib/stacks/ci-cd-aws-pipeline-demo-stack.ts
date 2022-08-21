@@ -17,7 +17,7 @@ export class CiCdAwsPipelineDemoStack extends cdk.Stack {
       pipelineName: "TestPipeline",
       synth: new ShellStep("Synth", {
         input: CodePipelineSource.gitHub("mscully4/personalSite-CDK", "test"), //Remember to change
-        commands: ["npm ci", "npm run build", "npx cdk synth"],
+        commands: ["npm ci", "npm run build", "npx cdk synth", "ls"],
         additionalInputs: {
           api: CodePipelineSource.gitHub(
             "mscully4/personalSite-Backend",

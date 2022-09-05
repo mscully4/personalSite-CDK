@@ -9,6 +9,7 @@ import {
 } from "aws-cdk-lib/pipelines";
 import { DeploymentEnvironment } from "../types/DeploymentEnvironment";
 import { ApplicationStage } from "../stages/applicationStage";
+import { BuildEnvironmentVariableType } from "aws-cdk-lib/aws-codebuild";
 
 interface PipelineStackProps extends StackProps {
   appName: string;
@@ -23,8 +24,10 @@ export class PipelineStack extends Stack {
     // Need to manually update the secret plaintext with Github API Key
     const githubAccessToken = new Secret(this, "githubAccessTokenSecret");
 
-    const frontEndBuildStep = new ShellStep("Build Frontend", {
-      // Where the source can be found
+    // Need to manually update this secret with the Token
+    const mapboxToken = new Secret(this, "MapBoxTokenSecret");
+
+    const frontEndBuildStep = new CodeBuildStep("Build Frontend", {
       input: CodePipelineSource.gitHub(
         "mscully4/personalSite-Frontend",
         "master-v2",
@@ -32,8 +35,22 @@ export class PipelineStack extends Stack {
           authentication: githubAccessToken.secretValue,
         }
       ),
-      commands: ["npm ci", "npm run build"],
+      commands: [
+        "echo REACT_APP_MAPBOX_TOKEN=$REACT_APP_MAPBOX_TOKEN >> .env",
+        "npm ci",
+        "npm run build",
+      ],
+      buildEnvironment: {
+        environmentVariables: {
+          REACT_APP_MAPBOX_TOKEN: {
+            value: "MapBoxTokenSecret18614651-76pPTxC7qWV1",
+            type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+          },
+        },
+      },
     });
+
+    console.log(mapboxToken.secretName);
 
     const backEndBuildStep = new ShellStep("Build Backend", {
       // Where the source can be found
@@ -68,7 +85,7 @@ export class PipelineStack extends Stack {
           frontend: frontEndBuildStep.addOutputDirectory("./build"),
         },
         // Install dependencies, build and run cdk synth
-        commands: ["ls", "npm ci", "npm run build", "npx cdk synth --quiet"],
+        commands: ["npm ci", "npm run build", "npx cdk synth --quiet"],
       }),
     });
 

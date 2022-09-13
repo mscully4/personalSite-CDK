@@ -32,11 +32,6 @@ export class DistributionStack extends Stack {
       websiteIndexDocument: "index.html",
     });
 
-    new BucketDeployment(this, "staticSiteDeployment", {
-      destinationBucket: bucket,
-      sources: [Source.asset("./frontend")],
-    });
-
     const originAccessIdentity = new OriginAccessIdentity(
       this,
       "OriginAccessIdentity"
@@ -58,6 +53,13 @@ export class DistributionStack extends Stack {
       ],
       certificate: props.sslCertificate,
       domainNames: ["michaeljscully.com"],
+    });
+
+    new BucketDeployment(this, "staticSiteDeployment", {
+      destinationBucket: bucket,
+      sources: [Source.asset("./frontend")],
+      distribution: distribution,
+      distributionPaths: ["/*"],
     });
 
     new ARecord(this, "ARecord", {

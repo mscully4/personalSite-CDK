@@ -9,7 +9,11 @@ import {
 } from "aws-cdk-lib/pipelines";
 import { DeploymentEnvironment } from "../types/DeploymentEnvironment";
 import { ApplicationStage } from "../stages/applicationStage";
-import { BuildEnvironmentVariableType } from "aws-cdk-lib/aws-codebuild";
+import {
+  BuildEnvironmentVariableType,
+  BuildSpec,
+  LinuxBuildImage,
+} from "aws-cdk-lib/aws-codebuild";
 
 interface PipelineStackProps extends StackProps {
   appName: string;
@@ -40,7 +44,18 @@ export class PipelineStack extends Stack {
         "npm ci",
         "npm run build",
       ],
+      partialBuildSpec: BuildSpec.fromObject({
+        version: "0.2",
+        phases: {
+          install: {
+            "runtime-versions": {
+              nodejs: "14.x",
+            },
+          },
+        },
+      }),
       buildEnvironment: {
+        buildImage: LinuxBuildImage.STANDARD_5_0,
         environmentVariables: {
           REACT_APP_MAPBOX_TOKEN: {
             value: "MapBoxTokenSecret18614651-76pPTxC7qWV1",
@@ -49,8 +64,6 @@ export class PipelineStack extends Stack {
         },
       },
     });
-
-    console.log(mapboxToken.secretName);
 
     const backEndBuildStep = new ShellStep("Build Backend", {
       // Where the source can be found

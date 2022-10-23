@@ -58,7 +58,7 @@ export class PipelineStack extends Stack {
         buildImage: LinuxBuildImage.STANDARD_5_0,
         environmentVariables: {
           REACT_APP_MAPBOX_TOKEN: {
-            value: "MapBoxTokenSecret18614651-76pPTxC7qWV1",
+            value: mapboxToken.secretArn,
             type: BuildEnvironmentVariableType.SECRETS_MANAGER,
           },
         },

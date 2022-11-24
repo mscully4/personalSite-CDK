@@ -16,6 +16,7 @@ export class StorageStack extends Stack {
       partitionKey: { name: "PK", type: AttributeType.STRING },
       sortKey: { name: "SK", type: AttributeType.STRING },
       billingMode: BillingMode.PAY_PER_REQUEST,
+      pointInTimeRecovery: true,
     });
 
     this.dynamoTableName = dynamoTable.tableName;

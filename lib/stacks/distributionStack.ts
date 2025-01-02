@@ -13,7 +13,7 @@ import {
   RecordTarget,
 } from "aws-cdk-lib/aws-route53";
 import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
-import { Bucket } from "aws-cdk-lib/aws-s3";
+import { BlockPublicAccess, Bucket } from "aws-cdk-lib/aws-s3";
 import { BucketDeployment, Source } from "aws-cdk-lib/aws-s3-deployment";
 import { Construct } from "constructs";
 
@@ -28,6 +28,12 @@ export class DistributionStack extends Stack {
 
     const bucket = new Bucket(this, "staticSiteBucket", {
       publicReadAccess: true,
+            blockPublicAccess: new BlockPublicAccess({
+              blockPublicAcls: false,
+              ignorePublicAcls: false,
+              blockPublicPolicy: false,
+              restrictPublicBuckets: false,
+            }),    
       removalPolicy: RemovalPolicy.DESTROY,
       websiteIndexDocument: "index.html",
     });

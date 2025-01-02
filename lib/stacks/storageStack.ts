@@ -2,7 +2,7 @@ import { Table, AttributeType, BillingMode } from "aws-cdk-lib/aws-dynamodb";
 import { Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { AccountRootPrincipal, Role } from "aws-cdk-lib/aws-iam";
-import { Bucket } from "aws-cdk-lib/aws-s3";
+import { BlockPublicAccess, Bucket } from "aws-cdk-lib/aws-s3";
 
 export class StorageStack extends Stack {
   public dynamoTableReadRole: Role;
@@ -32,13 +32,37 @@ export class StorageStack extends Stack {
     dynamoTable.grantReadData(this.dynamoTableReadRole);
     dynamoTable.grantWriteData(this.dynamoTableWriteRole);
 
-    const travelPhotosBucket = new Bucket(this, "travelMapPhotosBucket", {});
+    const travelPhotosBucket = new Bucket(this, "travelMapPhotosBucket", {
+      publicReadAccess: true,
+      blockPublicAccess: new BlockPublicAccess({
+        blockPublicAcls: false,
+        ignorePublicAcls: false,
+        blockPublicPolicy: false,
+        restrictPublicBuckets: false,
+      }),    
+    });
     travelPhotosBucket.grantPublicAccess();
 
-    const homePhotosBucket = new Bucket(this, "homePhotosBucket", {});
+    const homePhotosBucket = new Bucket(this, "homePhotosBucket", {
+      publicReadAccess: true,
+      blockPublicAccess: new BlockPublicAccess({
+        blockPublicAcls: false,
+        ignorePublicAcls: false,
+        blockPublicPolicy: false,
+        restrictPublicBuckets: false,
+      }),   
+    });
     homePhotosBucket.grantPublicAccess();
 
-    const staticResourcesBucket = new Bucket(this, "staticResourcesBucket", {});
+    const staticResourcesBucket = new Bucket(this, "staticResourcesBucket", {
+      publicReadAccess: true,
+      blockPublicAccess: new BlockPublicAccess({
+        blockPublicAcls: false,
+        ignorePublicAcls: false,
+        blockPublicPolicy: false,
+        restrictPublicBuckets: false,
+      }),
+    });
     staticResourcesBucket.grantPublicAccess();
   }
 }
